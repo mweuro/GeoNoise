@@ -1,7 +1,13 @@
 import numpy as np
+import yaml
 import geopandas as gpd
 import matplotlib
 import matplotlib.cm as cm
+
+
+def load_yaml(file_path: str) -> dict[dict[str, str]]:
+    with open(file_path, 'r') as file:
+        return yaml.safe_load(file)
 
 
 def filter_poligon(gdf, gdf_district, district_name):

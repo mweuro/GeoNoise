@@ -1,7 +1,5 @@
 download_data:
   https://www.arcgis.com/sharing/rest/content/items/db25442a233c44f3a540b26e8a261a55/data: data/NOISE.zip
   https://www.arcgis.com/sharing/rest/content/items/00bdd8df520e478e9505eb656c1780dd/data: data/PARKS.zip
-  https://www.arcgis.com/sharing/rest/content/items/67d56a6712a846759dff70f59528f1be/data: data/GREEN_AREAS.zip
   https://www.arcgis.com/sharing/rest/content/items/b1caf514714645698c1210f29f36be9a/data: data/DISTRICTS.zip
-  https://www.arcgis.com/sharing/rest/content/items/fb991d80dc4c4626bcba4d4a7ee71f9b/data: data/NOISE_CARS.zip
-  https://github.com/kraina-ai/srai-tutorial/blob/sotm2024/data/cadastral_data.geojson: data/DEMOGRAPHY.geojson
+  https://raw.githubusercontent.com/kraina-ai/srai-tutorial/sotm2024/data/cadastral_data.geojson: data/DEMOGRAPHY.geojson

@@ -4,6 +4,8 @@ import geopandas
 from shapely.geometry import MultiPolygon, Polygon
 from shapely.geometry import LineString
 import numpy as np
+import osmnx as ox
+import pandas as pd
 
 
 def parse_polygon(polygon_string):
@@ -71,3 +73,15 @@ def split_polygon(G, number_of_pixels_on_side = 100, thresh=0.99):
     Geoms        = SquareGeoDF[SquareGeoDF.intersects(G)].geometry.values
     geoms = [g for g in Geoms if ((g.intersection(G)).area / g.area) >= thresh]
     return geoms
+
+
+def download_buildings():
+    city = 'Praha'
+    buildings = ox.features_from_place(city, tags={'building': True})
+    buildings = buildings[['geometry', 'building:levels']]
+    buildings = buildings[(buildings['building:levels'].notna())]
+    buildings['building:levels'] = pd.to_numeric(buildings['building:levels'], errors='coerce')
+    buildings = buildings[buildings['building:levels'].notna()]
+    buildings = buildings[buildings.geometry.type.isin(['Polygon', 'MultiPolygon'])]
+    buildings = buildings.rename(columns={'building:levels': 'buildings_levels'})
+    return buildings

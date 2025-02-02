@@ -1,1 +1,11 @@
 ^data filter=lfs diff=lfs merge=lfs -text
+data/S2_GRID.geojson filter=lfs diff=lfs merge=lfs -text
+data/STREETS.geojson filter=lfs diff=lfs merge=lfs -text
+data/DISTRICTS.geojson filter=lfs diff=lfs merge=lfs -text
+data/NOISE.geojson filter=lfs diff=lfs merge=lfs -text
+data/NOISE_BARRIERS.geojson filter=lfs diff=lfs merge=lfs -text
+data/PARKS.geojson filter=lfs diff=lfs merge=lfs -text
+data/TRANSPORT_LINES.geojson filter=lfs diff=lfs merge=lfs -text
+data/BUILDINGS.geojson filter=lfs diff=lfs merge=lfs -text
+data/DEMOGRAPHY.geojson filter=lfs diff=lfs merge=lfs -text
+data/NOISE_BARRIERS_2.geojson filter=lfs diff=lfs merge=lfs -text

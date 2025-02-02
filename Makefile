@@ -27,3 +27,19 @@ convert_to_tensor:
 	echo $(REPO_ROOT)
 	mkdir -p $(REPO_ROOT)/data_to_train
 	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/convert_to_tensor.py
+
+
+.PHONY: train_eval
+train_eval:
+	echo $(REPO_ROOT)
+	mkdir -p $(REPO_ROOT)/model
+	mkdir -p $(REPO_ROOT)/model/val
+	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/train_eval.py
+
+
+.PHONY: test
+test:
+	echo $(REPO_ROOT)
+	mkdir -p $(REPO_ROOT)/model
+	mkdir -p $(REPO_ROOT)/model/test
+	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/test.py

@@ -94,3 +94,25 @@ def districts_noise_density_plot(noise_data, districts_data, *args):
         
     plt.tight_layout()
     plt.show()
+    
+    
+    
+def plot_metrics(train_losses, val_losses, train_accs, val_accs, save_loc = None):
+    epochs = [*range(1, len(train_losses) + 1)]
+    titles = ['Loss', 'Accuracy']
+    
+    _, axs = plt.subplots(1, 2, figsize = (15, 7))
+    axs[0].plot(epochs, train_losses, color = 'blue', linestyle = 'dashdot', label = 'train loss')
+    axs[0].plot(epochs, val_losses, color = 'blue', linestyle = 'solid', label = 'val loss')
+    axs[1].plot(epochs, train_accs, color = 'red', linestyle = 'dashdot', label = 'train acc')
+    axs[1].plot(epochs, val_accs, color = 'red', linestyle = 'solid', label = 'val acc')
+
+    for i in range(2):
+        axs[i].set_title(titles[i], fontsize = 10)
+        axs[i].set_xlabel('Epoch')
+        axs[i].set_ylabel(titles[i])
+        axs[i].legend()
+        
+    plt.suptitle('Model results', fontsize = 20)
+    plt.tight_layout()
+    plt.savefig(save_loc)

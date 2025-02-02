@@ -20,3 +20,10 @@ preprocess_data:
 aggregate_data:
 	echo $(REPO_ROOT)
 	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/aggregation.py
+
+
+.PHONY: convert_to_tensor
+convert_to_tensor:
+	echo $(REPO_ROOT)
+	mkdir -p $(REPO_ROOT)/data_to_train
+	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/convert_to_tensor.py

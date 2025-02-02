@@ -32,7 +32,7 @@ def calculate_weighted_db(pixel, noise_gdf):
             total_weight += weight
 
     # Return the weighted average, default to 0 if there's no coverage
-    return weighted_sum if total_weight > 0 else 0
+    return round(weighted_sum / 5) * 5 if total_weight > 0 else 0
 
 
 

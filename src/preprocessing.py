@@ -5,12 +5,12 @@ warnings.filterwarnings("ignore")
 
 
 
-def split_noise_multipolygons():
-    gdf = gpd.read_file('data/NOISE.geojson')
-    gdf = gdf.explode(index_parts = True).reset_index(drop = True)
-    gdf.to_file('data/NOISE_SPLIT.geojson', driver = 'GeoJSON')
-    print('NOISE.geojson splitted successfully')
-    return
+# def split_noise_multipolygons():
+#     gdf = gpd.read_file('data/NOISE.geojson')
+#     gdf = gdf.explode(index_parts = True).reset_index(drop = True)
+#     gdf.to_file('data/NOISE_SPLIT.geojson', driver = 'GeoJSON')
+#     print('NOISE.geojson splitted successfully')
+#     return
 
 
 
@@ -35,7 +35,7 @@ def main():
     data_paths = [os.path.join('data', file) for file in os.listdir('data') if file.endswith('.zip') or file.endswith('.geojson') and file != 'S2_GRID.geojson']
     for data in data_paths:
         shp2geojson(data)
-    split_noise_multipolygons()  
+    # split_noise_multipolygons()  
     return
 
 

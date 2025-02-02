@@ -7,6 +7,7 @@ load_data:
 	mkdir -p $(REPO_ROOT)/data
 	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/download_data.py
 	PYTHONPATH=$(REPO_ROOT) python src/s2_grid.py
+	PYTHONPATH=$(REPO_ROOT) python src/download_buildings_data.py
 
 
 .PHONY: preprocess_data

@@ -14,7 +14,7 @@ def _download_single_dataset(url: str, output_file: str) -> None:
 def download_data(urls_dict: dict[str, str]) -> None:
     for url, output_file in urls_dict.items():
         try:
-            if os.path.exists(output_file):
+            if os.path.exists(output_file) or os.path.exists(output_file.split('.')[0] + '.geojson'):
                 print(f'The file {output_file} already exists')
                 continue
             else:

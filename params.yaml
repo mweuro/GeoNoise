@@ -3,5 +3,7 @@ download_data:
   https://www.arcgis.com/sharing/rest/content/items/00bdd8df520e478e9505eb656c1780dd/data: data/PARKS.zip
   https://www.arcgis.com/sharing/rest/content/items/b1caf514714645698c1210f29f36be9a/data: data/DISTRICTS.zip
   https://www.arcgis.com/sharing/rest/content/items/fb1550a2e8be4693a18bfd70f9548a2a/data: data/TRANSPORT_LINES.zip
-  https://www.arcgis.com/sharing/rest/content/items/5ab5614fae0440ac9cd5dcb0b088d574/data: data/ROADS.zip
+  https://www.arcgis.com/sharing/rest/content/items/5ab5614fae0440ac9cd5dcb0b088d574/data: data/STREETS.zip
+  https://www.arcgis.com/sharing/rest/content/items/3e721ff7d6f348398f0aa0d3e1511404/data: data/NOISE_BARRIERS.zip
+  https://www.arcgis.com/sharing/rest/content/items/194bed0cc35044d2b956809c7fe518f9/data: data/NOISE_BARRIERS_2.zip
   https://raw.githubusercontent.com/kraina-ai/srai-tutorial/sotm2024/data/cadastral_data.geojson: data/DEMOGRAPHY.geojson

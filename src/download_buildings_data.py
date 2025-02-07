@@ -4,7 +4,7 @@ import os
 
 
 
-def download_buildings():
+def download_buildings() -> None:
     if os.path.exists('data/BUILDINGS.geojson'):
         print('The file data/BUILDINGS.geojson already exists')
     else:
@@ -22,7 +22,7 @@ def download_buildings():
 
 
 
-def main():
+def main() -> None:
     download_buildings()
     return
 

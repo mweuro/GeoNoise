@@ -2,12 +2,11 @@ import geopandas as gpd
 import pandas as pd
 import os
 from src.s2_grid import split_polygon
-from src.download_roads_data import get_roads_from_osmnx
 
 
 
 def create_pixels_gdf(picture):
-    pixels = split_polygon(picture, number_of_pixels_on_side = 25, thresh=0.99)
+    pixels = split_polygon(picture, number_of_pixels_on_side = 25, thresh = 0.99)
     pixels = gpd.GeoDataFrame(pixels).rename(columns={0: "geometry"})
     pixels.set_geometry('geometry', inplace=True)
     pixels.set_crs('EPSG:5514', inplace=True)
@@ -41,7 +40,7 @@ def get_max_speed(pixel, roads_for_picture):
     
     if not intersecting_roads.empty:
         # Convert 'maxspeed' column to numeric, handle missing values, and find the max
-        return pd.to_numeric(intersecting_roads["maxspeed"], errors="coerce").max(skipna=True)
+        return pd.to_numeric(intersecting_roads["maxspeed"], errors = "coerce").max(skipna = True)
     
     return 0  # If no road is found in the square
 
@@ -92,31 +91,32 @@ def get_population(pixel, population_for_pixel):
 
 
 def main():
+    print('DATA AGGREGATION STARTED')
+    
     pictures = gpd.read_file("data/S2_GRID.geojson")
     noise = gpd.read_file("data/NOISE.geojson")
     transport_lines = gpd.read_file("data/TRANSPORT_LINES.geojson")
     noise_barriers_1 = gpd.read_file('data/NOISE_BARRIERS.geojson')
     noise_barriers_2 = gpd.read_file('data/NOISE_BARRIERS_2.geojson')
-    noise_barriers_1.drop(columns='ID_CLONA', inplace=True)
-    noise_barriers_2.drop(columns='ID_VAL', inplace=True)
-    noise_barriers = pd.concat([noise_barriers_1, noise_barriers_2]).reset_index(drop=True)
+    noise_barriers_1.drop(columns = 'ID_CLONA', inplace = True)
+    noise_barriers_2.drop(columns = 'ID_VAL', inplace = True)
+    noise_barriers = pd.concat([noise_barriers_1, noise_barriers_2]).reset_index(drop = True)
     parks = gpd.read_file('data/PARKS.geojson')
     buildings = gpd.read_file('data/BUILDINGS.geojson')
     population = gpd.read_file('data/DEMOGRAPHY.geojson')
+    roads = gpd.read_file('data/ROADS.geojson')
     
     if not isinstance(population, gpd.GeoDataFrame) or 'geometry' not in population.columns:
         population = gpd.GeoDataFrame({'geometry': population})
-        
-    roads = get_roads_from_osmnx()
     
-    # Validate and correct geometries
-    noise.geometry = noise.geometry.buffer(0)
-    transport_lines.geometry = transport_lines.geometry.buffer(0)
-    noise_barriers.geometry = noise_barriers.geometry.buffer(0)
-    parks.geometry = parks.geometry.buffer(0)
-    buildings.geometry = buildings.geometry.buffer(0)
-    # population = population.buffer(0)
-    roads.geometry = roads.geometry.buffer(0)
+    # # Validate and correct geometries
+    # noise.geometry = noise.geometry.buffer(0)
+    # transport_lines.geometry = transport_lines.geometry.buffer(0)
+    # # noise_barriers.geometry = noise_barriers.geometry.buffer(0)
+    # parks.geometry = parks.geometry.buffer(0)
+    # buildings.geometry = buildings.geometry.buffer(0)
+    # # population = population.buffer(0)
+    # roads.geometry = roads.geometry.buffer(0)
 
     noise_bounds = noise.unary_union
     transport_lines = gpd.clip(transport_lines, noise_bounds)
@@ -133,13 +133,16 @@ def main():
             transport_lines_for_picture = gpd.clip(transport_lines, picture)
             buildings_for_picture = gpd.clip(buildings, picture)
             bariers_for_picture = gpd.clip(noise_barriers, picture)
-            parks_for_picture = gpd.clip(parks, picture)
+            try:
+                parks_for_picture = gpd.clip(parks, picture)
+            except:
+                parks_copy = parks.copy()
+                parks_copy.geometry = parks_copy.geometry.buffer(0)
+                parks_for_picture = gpd.clip(parks_copy, picture)
             
-            population_subgdf = gpd.GeoDataFrame({'geometry': [picture]}, crs=population.crs)
-            print(f"population_subgdf type: {type(population_subgdf)}")  # Debug print
-            print(f"population type: {type(population)}")  # Debug print
-            population_for_picture = gpd.sjoin(population, population_subgdf, how='inner', predicate='intersects')
-            population_for_picture = population_for_picture.drop(columns='index_right')
+            population_subgdf = gpd.GeoDataFrame({'geometry': [picture]}, crs = population.crs)
+            population_for_picture = gpd.sjoin(population, population_subgdf, how = 'inner', predicate = 'intersects')
+            population_for_picture = population_for_picture.drop(columns = 'index_right')
 
             pixels = create_pixels_gdf(picture)
 
@@ -164,10 +167,14 @@ def main():
             #population
             pixels['population'] = pixels.geometry.apply(lambda pixel: get_population(pixel, population_for_picture))
             
-            pixels.to_file(f"data/pictures/picture_{i}.geojson", driver="GeoJSON")
+            pixels.to_file(f"data/pictures/picture_{i}.geojson", driver = "GeoJSON")
             print(f"Picture {i} processed")
+        
+    print('DATA AGGREGATION FINISHED')
 
     return
+
+
 
 if __name__ == '__main__':
     main()

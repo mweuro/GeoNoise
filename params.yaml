@@ -7,3 +7,7 @@ download_data:
   https://www.arcgis.com/sharing/rest/content/items/3e721ff7d6f348398f0aa0d3e1511404/data: data/NOISE_BARRIERS.zip
   https://www.arcgis.com/sharing/rest/content/items/194bed0cc35044d2b956809c7fe518f9/data: data/NOISE_BARRIERS_2.zip
   https://raw.githubusercontent.com/kraina-ai/srai-tutorial/sotm2024/data/cadastral_data.geojson: data/DEMOGRAPHY.geojson
+
+s2_grid_params:
+  side_length: 1000
+  thresh: 0.01

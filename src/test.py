@@ -1,17 +1,18 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
 import json
 from tqdm import tqdm
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score
 from src.model import *
 import json
 import torchvision.transforms as transforms
-from src.plots import plot_metrics
 
 
 
-def evaluate_model(model, dataloader, criterion, device):
+def evaluate_model(model: CNNClassifier, 
+                   dataloader: DataLoader, 
+                   criterion: nn.CrossEntropyLoss, 
+                   device: str) -> tuple[float, float]:
     model.eval()
     total_loss = 0
     all_preds = []
@@ -35,7 +36,7 @@ def evaluate_model(model, dataloader, criterion, device):
 
 
 
-def load_data(data):
+def load_data(data: torch.Tensor) -> tuple[DataLoader, DataLoader, DataLoader]:
     transform = transforms.Compose([
         transforms.RandomHorizontalFlip(),
         transforms.RandomRotation(15),
@@ -48,7 +49,7 @@ def load_data(data):
 
 
 
-def main():
+def main() -> None:
     data = torch.load("data_to_train/tensors.pt")
     _, _, test_loader = load_data(data)
     

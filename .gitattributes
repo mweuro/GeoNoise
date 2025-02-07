@@ -9,3 +9,5 @@ data/TRANSPORT_LINES.geojson filter=lfs diff=lfs merge=lfs -text
 data/BUILDINGS.geojson filter=lfs diff=lfs merge=lfs -text
 data/DEMOGRAPHY.geojson filter=lfs diff=lfs merge=lfs -text
 data/NOISE_BARRIERS_2.geojson filter=lfs diff=lfs merge=lfs -text
+*.geojson filter=lfs diff=lfs merge=lfs -text
+*.html filter=lfs diff=lfs merge=lfs -text

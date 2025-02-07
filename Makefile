@@ -8,6 +8,7 @@ load_data:
 	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/download_data.py
 	PYTHONPATH=$(REPO_ROOT) python src/s2_grid.py
 	PYTHONPATH=$(REPO_ROOT) python src/download_buildings_data.py
+	PYTHONPATH=$(REPO_ROOT) python src/download_roads_data.py
 
 
 .PHONY: preprocess_data
@@ -19,6 +20,7 @@ preprocess_data:
 .PHONY: aggregate_data
 aggregate_data:
 	echo $(REPO_ROOT)
+	mkdir -p $(REPO_ROOT)/data/pictures
 	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/aggregation.py
 
 
@@ -43,3 +45,10 @@ test:
 	mkdir -p $(REPO_ROOT)/model
 	mkdir -p $(REPO_ROOT)/model/test
 	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/test.py
+
+
+.PHONY: create_map
+create_map:
+	echo $(REPO_ROOT)
+	mkdir -p $(REPO_ROOT)/maps
+	cd $(REPO_ROOT) && PYTHONPATH=$(REPO_ROOT) python src/interactive_maps.py

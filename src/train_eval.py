@@ -5,11 +5,11 @@ from src.plots import plot_metrics
 
 
 
-def load_data(data):
+def load_data(data: torch.Tensor) -> tuple[DataLoader, DataLoader, DataLoader]:
     transform = transforms.Compose([
         transforms.RandomHorizontalFlip(),
         transforms.RandomRotation(15),
-        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
+        transforms.RandomAffine(degrees = 0, translate = (0.1, 0.1)),
     ])
     features_list, labels_list = get_data(data)
     train_loader, val_loader, test_loader = create_dataloaders(features_list, labels_list, transform, 32)
@@ -17,7 +17,7 @@ def load_data(data):
     return train_loader, val_loader, test_loader
 
 
-def main():
+def main() -> None:
     data = torch.load("data_to_train/tensors.pt")
     train_loader, val_loader, _ = load_data(data)
     
@@ -39,6 +39,7 @@ def main():
     plot_metrics(train_losses, val_losses, train_accs, val_accs, 'model/val/metrics.png')
     print('Results saved to model/val/best_results.json')
     print('Plot saved to model/val/metrics.png')
+    return
 
 
 

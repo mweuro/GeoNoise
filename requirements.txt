@@ -13,3 +13,10 @@ geopandas==1.0.1
 leafmap==0.42.6
 pysal==24.7
 h3==4.1.2
+torch==2.6.0
+torchvision==0.21.0
+tqdm==4.67.1
+scikit-learn==1.6.1
+shapely==2.0.6
+osmnx==2.0.1
+contextily==1.6.2

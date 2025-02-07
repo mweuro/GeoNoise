@@ -8,6 +8,7 @@ def _download_single_dataset(url: str, output_file: str) -> None:
     with open(output_file, 'wb') as file:
         for chunk in response.iter_content(chunk_size = 8192):
             file.write(chunk)
+    return
     
     
 
@@ -25,6 +26,7 @@ def download_data(urls_dict: dict[str, str]) -> None:
         finally:
             continue
     print('Download completed')
+    return
 
 
 
@@ -32,6 +34,7 @@ def main() -> None:
     yaml_path = 'params.yaml'
     urls_dict = load_yaml(yaml_path)['download_data']
     download_data(urls_dict)
+    return
 
 
 

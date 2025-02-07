@@ -1,20 +1,16 @@
 import numpy as np
 import geopandas as gpd
 from shapely.ops import split
-from shapely.geometry import MultiPolygon, LineString
+from shapely.geometry import MultiPolygon, LineString, Polygon
 import warnings
 warnings.filterwarnings("ignore")
+from src.utils import load_yaml
 
 
 
 
-def get_squares_from_rect(RectangularPolygon, side_length=0.0025):
-    """
-    Divide a Rectangle (Shapely Polygon) into squares of equal area.
-
-    `side_length` : required side of square
-
-    """
+def get_squares_from_rect(RectangularPolygon: Polygon | MultiPolygon, 
+                          side_length: int) -> list[Polygon]:
     rect_coords = np.array(RectangularPolygon.boundary.coords.xy)
     y_list = rect_coords[1]
     x_list = rect_coords[0]
@@ -47,47 +43,18 @@ def get_squares_from_rect(RectangularPolygon, side_length=0.0025):
 
 
 
-def split_polygon(G, side_length = None, 
-                  number_of_pixels_on_side = None, 
-                  thresh = 0.9):
-    """
-    Using a rectangular envelope around `G`, creates a mesh of squares of required length.
-    
-    Removes non-intersecting polygons. 
-            
+def split_polygon(G: Polygon, side_length: int = None, 
+                  number_of_pixels_on_side: int = None, 
+                  thresh: float = 0.01) -> list[Polygon]:
 
-    Args:
-    
-    - `thresh` : Range - [0,1]
-
-        This controls - the number of smaller polygons at the boundaries.
-        
-        A thresh == 1 will only create (or retain) smaller polygons that are 
-        completely enclosed (area of intersection=area of smaller polygon) 
-        by the original Geometry - `G`.
-        
-        A thresh == 0 will create (or retain) smaller polygons that 
-        have a non-zero intersection (area of intersection>0) with the
-        original geometry - `G` 
-
-    - `side_length` : Range - (0,infinity)
-        side_length must be such that the resultant geometries are smaller 
-        than the original geometry - `G`, for a useful result.
-
-        side_length should be >0 (non-zero positive)
-
-    - `shape` : {square/rhombus}
-        Desired shape of subset geometries. 
-
-
-    """
+    side_param = load_yaml('params.yaml')['s2_grid_params']['side_length']
     if side_length is not None and number_of_pixels_on_side is not None:
         raise ValueError("Provide either side_length or number_of_pixels_on_side, not both")
     
     if side_length is not None:
         assert side_length > 0, "side_length must be a float>0"
     elif number_of_pixels_on_side is not None:
-        side_length = int(1500 / number_of_pixels_on_side)
+        side_length = int(side_param / number_of_pixels_on_side)
         assert side_length > 0, "side_length must be a float>0"
     else:
         raise ValueError("Either side_length or number_of_pixels_on_side must be provided")
@@ -102,15 +69,14 @@ def split_polygon(G, side_length = None,
 
 
 
-def main():
-    try:
-        districts = gpd.read_file('data/DISTRICTS.zip')
-    except:
-        districts = gpd.read_file('data/DISTRICTS.geojson')
+def main() -> None:
+    yaml_path = 'params.yaml'
+    params = load_yaml(yaml_path)['s2_grid_params']
+    
+    districts = gpd.read_file('data/DISTRICTS.zip')
     city_boundary = districts.unary_union
-    squares   = split_polygon(city_boundary, 
-                              thresh = 0.01, 
-                              side_length = 1500)
+    squares = split_polygon(city_boundary, 
+                            **params)
     squares = gpd.GeoDataFrame(squares).rename(columns = {0: "geometry"})
     squares.set_geometry('geometry', inplace = True)
     squares.set_crs(epsg = 5514, inplace = True)
